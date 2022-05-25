@@ -108,6 +108,7 @@ function WalletContextProvider({ children }) {
         balance,
         account,
         currentAccount,
+        setCurrentAccount,
         network,
         active,
         chainId,
