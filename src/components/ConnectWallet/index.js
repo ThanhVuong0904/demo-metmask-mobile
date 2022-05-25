@@ -36,7 +36,8 @@ export default function ConnectWallet() {
     const [checkPolicy, setCheckPolicy] = useState(false);
     const [toggle, setToggle] = useState(false);
 
-    const { connect, account, network, error, active, balance, disconnect, switchNetwork } = useContext(WalletContext);
+    const { connect, connetWallet, account, network, error, active, balance, disconnect, switchNetwork } =
+        useContext(WalletContext);
     return (
         <>
             {account ? (
@@ -166,6 +167,9 @@ export default function ConnectWallet() {
                                                 if (wallet.name === 'Metamask') {
                                                     connect();
                                                     setToggle(false);
+                                                }
+                                                if (wallet.name === 'WalletConnect') {
+                                                    connetWallet();
                                                 }
                                             }}
                                         >
