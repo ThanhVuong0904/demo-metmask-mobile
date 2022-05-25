@@ -1,16 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { Web3ReactProvider } from '@web3-react/core';
-import Web3 from 'web3';
+// import { Web3ReactProvider } from '@web3-react/core';
+// import Web3 from 'web3';
 import GlobalStyles from './components/GlobalStyles';
 import WalletContextProvider from './contexts/WalletContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-function getLibrary(provider) {
-    console.log(provider);
-    return new Web3(provider);
-}
+// function getLibrary(provider) {
+//     console.log(provider);
+//     return new Web3(provider);
+// }
 root.render(
     // <Web3ReactProvider getLibrary={getLibrary}>
     <WalletContextProvider>
