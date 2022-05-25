@@ -7,12 +7,12 @@ import detectEthereumProvider from '@metamask/detect-provider';
 export const WalletContext = createContext();
 
 function WalletContextProvider({ children }) {
-    const { active, account, activate, deactivate, chainId, error } = useWeb3React();
+    const { active, activate, deactivate, chainId, error } = useWeb3React();
     const [web3, setWeb3] = useState();
     const [provider, setProvider] = useState();
     const [balance, setBalance] = useState();
     const [network, setNetwork] = useState();
-    const [currentAccount, setCurrentAccount] = useState();
+    const [account, setAccount] = useState();
     const injected = new InjectedConnector({
         //chain is network blockchain
         // 4 rinkeby
@@ -20,12 +20,23 @@ function WalletContextProvider({ children }) {
         // 0x13881 mumbai
         supportedChainIds: [4, 97, 80001],
     });
+    function isMobileDevice() {
+        return 'ontouchstart' in window || 'onmsgesturechange' in window;
+    }
     useEffect(() => {
         const loadProvider = async () => {
             const provider = await detectEthereumProvider();
-            const web3 = new Web3(provider);
-            setWeb3(web3);
-            setProvider(provider);
+            if (provider) {
+                const web3 = new Web3(provider);
+                setWeb3(web3);
+                setProvider(provider);
+                const chainId = await provider.request({
+                    method: 'eth_chainId',
+                });
+                console.log({ chainId });
+            } else {
+                alert('Install metamask');
+            }
         };
         loadProvider();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,12 +61,15 @@ function WalletContextProvider({ children }) {
                 }
             }
         };
-        connectWalletOnPageLoad();
+        provider && connectWalletOnPageLoad();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [provider]);
     useEffect(() => {
         console.log(error);
     }, [error]);
+    useEffect(() => {
+        console.log(provider);
+    }, [provider]);
     useEffect(() => {
         if (chainId) {
             switch (chainId) {
@@ -73,8 +87,10 @@ function WalletContextProvider({ children }) {
     async function connect() {
         try {
             // await activate(injected);
-            const account = await provider.request({ method: 'eth_requestAccounts' });
-            console.log(account);
+            const accounts = await provider.request({ method: 'eth_requestAccounts' });
+            console.log(accounts);
+            setAccount(accounts[0]);
+            console.log('isMobileDevice()', isMobileDevice());
             localStorage.setItem('isWalletConnected', true);
         } catch (ex) {
             console.log(ex);
@@ -107,8 +123,6 @@ function WalletContextProvider({ children }) {
         web3,
         balance,
         account,
-        currentAccount,
-        setCurrentAccount,
         network,
         active,
         chainId,

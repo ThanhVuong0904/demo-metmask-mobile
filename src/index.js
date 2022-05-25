@@ -12,13 +12,13 @@ function getLibrary(provider) {
     return new Web3(provider);
 }
 root.render(
-    <Web3ReactProvider getLibrary={getLibrary}>
-        <WalletContextProvider>
-            <GlobalStyles>
-                <App />
-            </GlobalStyles>
-        </WalletContextProvider>
-    </Web3ReactProvider>,
+    // <Web3ReactProvider getLibrary={getLibrary}>
+    <WalletContextProvider>
+        <GlobalStyles>
+            <App />
+        </GlobalStyles>
+    </WalletContextProvider>,
+    // </Web3ReactProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function
