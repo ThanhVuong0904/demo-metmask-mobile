@@ -1,25 +1,25 @@
 import { createContext, useEffect, useState } from 'react';
-import { InjectedConnector } from '@web3-react/injected-connector';
-import { useWeb3React } from '@web3-react/core';
+// import { InjectedConnector } from '@web3-react/injected-connector';
+// import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 import detectEthereumProvider from '@metamask/detect-provider';
 
 export const WalletContext = createContext();
 
 function WalletContextProvider({ children }) {
-    const { active, activate, deactivate, chainId, error } = useWeb3React();
+    // const { active, activate, deactivate, chainId, error } = useWeb3React();
     const [web3, setWeb3] = useState();
     const [provider, setProvider] = useState();
     const [balance, setBalance] = useState();
-    const [network, setNetwork] = useState();
+    // const [network, setNetwork] = useState();
     const [account, setAccount] = useState();
-    const injected = new InjectedConnector({
-        //chain is network blockchain
-        // 4 rinkeby
-        // 97 bsc testnet
-        // 0x13881 mumbai
-        supportedChainIds: [4, 97, 80001],
-    });
+    // const injected = new InjectedConnector({
+    //     //chain is network blockchain
+    //     // 4 rinkeby
+    //     // 97 bsc testnet
+    //     // 0x13881 mumbai
+    //     supportedChainIds: [4, 97, 80001],
+    // });
     function isMobileDevice() {
         return 'ontouchstart' in window || 'onmsgesturechange' in window;
     }
@@ -54,7 +54,7 @@ function WalletContextProvider({ children }) {
         const connectWalletOnPageLoad = async () => {
             if (localStorage?.getItem('isWalletConnected') === 'true') {
                 try {
-                    await activate(injected);
+                    // await activate(injected);
                     localStorage.setItem('isWalletConnected', true);
                 } catch (ex) {
                     console.log(ex);
@@ -64,26 +64,11 @@ function WalletContextProvider({ children }) {
         provider && connectWalletOnPageLoad();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [provider]);
-    useEffect(() => {
-        console.log(error);
-    }, [error]);
+
     useEffect(() => {
         console.log(provider);
     }, [provider]);
-    useEffect(() => {
-        if (chainId) {
-            switch (chainId) {
-                case 4:
-                    return setNetwork('ETH');
-                case 97:
-                    return setNetwork('BSC');
-                case 80001:
-                    return setNetwork('MUMBAI');
-                default:
-                    throw new Error('Not support chain id');
-            }
-        }
-    }, [chainId]);
+
     async function connect() {
         try {
             // await activate(injected);
@@ -105,7 +90,7 @@ function WalletContextProvider({ children }) {
 
     async function disconnect() {
         try {
-            deactivate();
+            // deactivate();
             localStorage.setItem('isWalletConnected', false);
             console.log({ account });
         } catch (ex) {
@@ -123,10 +108,10 @@ function WalletContextProvider({ children }) {
         web3,
         balance,
         account,
-        network,
-        active,
-        chainId,
-        error,
+        // network,
+        // active,
+        // chainId,
+        // error,
         connect,
         disconnect,
         switchNetwork,
