@@ -48,6 +48,7 @@ export default function ConnectWallet() {
                 <>
                     {error && (
                         <p className={cx('wrapper')} onClick={() => switchNetwork()}>
+                            {alert(error)}
                             Switch Network
                         </p>
                     )}

@@ -50,7 +50,9 @@ function WalletContextProvider({ children }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
-        console.log(error);
+        if (error) {
+            alert(error);
+        }
     }, [error]);
     useEffect(() => {
         if (chainId) {
