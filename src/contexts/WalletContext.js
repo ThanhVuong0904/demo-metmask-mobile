@@ -35,20 +35,20 @@ function WalletContextProvider({ children }) {
         account && getBalance();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account]);
-    useEffect(() => {
-        const connectWalletOnPageLoad = async () => {
-            if (localStorage?.getItem('isWalletConnected') === 'true') {
-                try {
-                    await activate(connectors.injected);
-                    localStorage.setItem('isWalletConnected', true);
-                } catch (ex) {
-                    console.log(ex);
-                }
-            }
-        };
-        connectWalletOnPageLoad();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // useEffect(() => {
+    //     const connectWalletOnPageLoad = async () => {
+    //         if (localStorage?.getItem('isWalletConnected') === 'true') {
+    //             try {
+    //                 await activate(connectors.injected);
+    //                 localStorage.setItem('isWalletConnected', true);
+    //             } catch (ex) {
+    //                 console.log(ex);
+    //             }
+    //         }
+    //     };
+    //     connectWalletOnPageLoad();
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, []);
     useEffect(() => {
         if (error) {
             alert(error);
