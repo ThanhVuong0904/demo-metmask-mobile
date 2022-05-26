@@ -1,10 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
-import { InjectedConnector } from '@web3-react/injected-connector';
+
 import { useWeb3React } from '@web3-react/core';
 import Web3 from 'web3';
 import detectEthereumProvider from '@metamask/detect-provider';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-console.log(WalletConnectConnector);
+
+import { connectors } from '../utils/connectors.js';
 
 export const WalletContext = createContext();
 
@@ -14,21 +14,6 @@ function WalletContextProvider({ children }) {
     const [provider, setProvider] = useState();
     const [balance, setBalance] = useState();
     const [network, setNetwork] = useState();
-    const [walletConnectProvider, setWalletConnectProvider] = useState(
-        new WalletConnectConnector({
-            rpcUrl: `https://mainnet.infura.io/v3/27e484dcd9e3efcfd25a83a78777cdf1`,
-            bridge: 'https://bridge.walletconnect.org',
-            qrcode: true,
-        }),
-    );
-    const injected = new InjectedConnector({
-        //chain is network blockchain
-        // 4 rinkeby
-        // 97 bsc testnet
-        // 0x13881 mumbai
-        supportedChainIds: [4, 97, 80001],
-    });
-    console.log(injected);
     useEffect(() => {
         const loadProvider = async () => {
             // await walletConnectProvider.enable();
@@ -54,7 +39,7 @@ function WalletContextProvider({ children }) {
         const connectWalletOnPageLoad = async () => {
             if (localStorage?.getItem('isWalletConnected') === 'true') {
                 try {
-                    await activate(injected);
+                    await activate(connectors.injected);
                     localStorage.setItem('isWalletConnected', true);
                 } catch (ex) {
                     console.log(ex);
@@ -70,6 +55,8 @@ function WalletContextProvider({ children }) {
     useEffect(() => {
         if (chainId) {
             switch (chainId) {
+                case 1:
+                    return setNetwork('MAINNET ETH');
                 case 4:
                     return setNetwork('ETH');
                 case 97:
@@ -83,7 +70,7 @@ function WalletContextProvider({ children }) {
     }, [chainId]);
     async function connect() {
         try {
-            await activate(injected);
+            await activate(connectors.injected);
             localStorage.setItem('isWalletConnected', true);
         } catch (ex) {
             console.log(ex);
@@ -106,8 +93,7 @@ function WalletContextProvider({ children }) {
         });
     };
     const connetWallet = async () => {
-        console.log('WalletConnect', walletConnectProvider);
-        await activate(walletConnectProvider);
+        await activate(connectors.walletConnect);
     };
     const state = {
         web3,
@@ -121,7 +107,6 @@ function WalletContextProvider({ children }) {
         disconnect,
         switchNetwork,
         connetWallet,
-        setWalletConnectProvider,
     };
     return <WalletContext.Provider value={state}>{children}</WalletContext.Provider>;
 }

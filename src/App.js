@@ -6,15 +6,6 @@ import DefaultLayout from './components/Layout/DefaultLayout';
 function App() {
     return (
         <Router>
-            {/* <button onClick={connect}>Connect to MetaMask</button>
-            {active ? (
-                <span>
-                    Connected with <b>{account}</b>
-                </span>
-            ) : (
-                <span>Not connected</span>
-            )}
-            <button onClick={disconnect}>Disconnect</button> */}
             <Routes>
                 {publicRoutes.map((route, index) => {
                     const Page = route.component;
